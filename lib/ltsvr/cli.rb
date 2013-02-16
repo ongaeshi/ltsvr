@@ -24,8 +24,11 @@ module Ltsvr
       opts.on("--web"                  , "Go to website(http://ltsv.org)")                       {|v| options[:web] = true }
       opts.parse!(arguments)
 
-      while line = gets
-        p LTSV.parse(line)[0]
+      arguments.each do |filename|
+        io = open(filename)
+        while line = io.gets
+          p LTSV.parse(line)[0]
+        end
       end
     end
   end
