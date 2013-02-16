@@ -1,30 +1,5 @@
 #!/usr/bin/env ruby
-# -*- coding: utf-8 -*-
-#
-# ltsvr (ltsv viewer for Ruby)
-#
 
-require 'rubygems'
-require 'ltsv'
-require 'optparse'
+require 'ltsvr'
 
-class CLI
-  def self.execute(stdout, arguments=[])
-    options = {}
-    options[:keywords]        = []
-    options[:ignore_keywords] = []
-    options[:filters]         = []
-    
-    opts = OptionParser.new("#{File.basename($0)}")
-    opts.on("-k", "--keywords"       , "Display keywords   (-k host,ua)")                      {|v| options[:keywords]        << v }
-    opts.on("-i", "--ignore-keywords", "Ignore keywords    (-i time,req)")                     {|v| options[:ignore_keywords] << v }
-    opts.on("-f", "--filter"         , "Filtering keywords (-f host=192.168.1.1,ua=~Mozilla)") {|v| options[:filters]         << v }
-    opts.parse!(arguments)
-
-    while line = gets
-      p LTSV.parse(line)[0]
-    end
-  end
-end
-
-CLI.execute(STDOUT, ARGV)
+Ltsvr::CLI.execute(STDOUT, ARGV)
