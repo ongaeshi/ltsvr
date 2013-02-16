@@ -24,14 +24,26 @@ module Ltsvr
       opts.on("--web"                        , "Go to website (http://ltsv.org)")                      {|v| options[:web] = true }
       opts.parse!(arguments)
 
-      arguments.each do |filename|
-        io = open(filename)
-        while line = io.gets
-          p LTSV.parse(line)[0]
+      obj = Ltsvr.new
+
+      if File.pipe?($stdin)
+        while line = $stdin.gets # @todo tail -f が上手く動かない
+          p obj.parse_line(line)
+        end
+      else
+        arguments.each do |filename|
+          io = open(filename)
+          while line = io.gets
+            p obj.parse_line(line)
+          end
         end
       end
     end
   end
+
+  class Ltsvr
+    def parse_line(line)
+      LTSV.parse(line)[0]
+    end
+  end
 end
-
-
