@@ -30,6 +30,8 @@ module Ltsvr
         while line = $stdin.gets
           stdout.puts obj.parse_line(line)
         end
+      elsif arguments.empty?
+        stdout.puts opts.help
       else
         arguments.each do |filename|
           io = open(filename)
