@@ -8,6 +8,7 @@
 require 'rubygems'
 require 'ltsv'
 require 'optparse'
+require 'launchy'
 
 module Ltsvr
   class CLI
@@ -23,6 +24,11 @@ module Ltsvr
       opts.on("-f FILTER", "--filter"        , "Filtering keywords (-f host=192.168.1.1,ua=Mozilla)")  {|v| options[:filters]         << v }
       opts.on("--web"                        , "Go to website (http://ltsv.org)")                      {|v| options[:web] = true }
       opts.parse!(arguments)
+
+      if options[:web]
+        Launchy.open('http://ltsv.org')
+        return
+      end
 
       obj = Ltsvr.new(options)
 
