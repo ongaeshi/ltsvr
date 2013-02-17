@@ -23,13 +23,25 @@ module Ltsvr
 
     def test_file_specify
       r = command(TEST_LTSV).split("\n")
-      assert_equal 3, r.size 
+      assert_equal 4, r.size 
     end
 
     def test_filter
       r = command("#{TEST_LTSV} -f user=takashi").split("\n")
       assert_equal 1, r.size
       assert_match /takashi/, r[0]
+    end
+
+    def test_filter_multi
+      r = command("#{TEST_LTSV} -f user=frank,referer=index").split("\n")
+      assert_equal 1, r.size
+      assert_match /index.html/, r[0]
+    end
+
+    def test_filter_multi_arguments
+      r = command("#{TEST_LTSV} -f user=frank,referer=index -f ua=Mozilla").split("\n")
+      assert_equal 1, r.size
+      assert_match /index.html/, r[0]
     end
 
     private

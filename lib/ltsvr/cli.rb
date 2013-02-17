@@ -67,12 +67,11 @@ module Ltsvr
     end
 
     def filter_compile
-      # p @options
       @filters = @options[:filters].reduce([]) do |result, v|
-        # p v
-        d = v.split("=")
-        result << Filter.new(d[0], d[1])
-        
+        result + v.split(",").map do |data|
+          d = data.split("=")
+          Filter.new(d[0], d[1])
+        end
       end
       # p @filters
     end
