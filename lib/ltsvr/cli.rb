@@ -18,7 +18,7 @@ module Ltsvr
       options[:ignore_keywords] = []
       options[:filters]         = []
       
-      opts = OptionParser.new("#{File.basename($0)}")
+      opts = OptionParser.new("#{File.basename($0)} [OPTION] [FILE]...")
       opts.on("-k LABEL", "--keywords"       , "Display keywords   (-k host,ua)")                      {|v| options[:keywords]        << v }
       opts.on("-i LABEL", "--ignore-keywords", "Ignore keywords    (-i time,req)")                     {|v| options[:ignore_keywords] << v }
       opts.on("-f FILTER", "--filter"        , "Filtering keywords (-f host=192.168.1.1,ua=Mozilla)")  {|v| options[:filters]         << v }

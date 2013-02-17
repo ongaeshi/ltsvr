@@ -1,24 +1,26 @@
-# Ltsvr
+# ltsvr - LTSV viewer for Ruby
 
-TODO: Write a gem description
+LTSV Viewer made with Ruby. 
+
+* Select label `-k host,ua`, `-i time,req`
+* Filtering keyword `-f ua=Mozilla`
+* Go to LTSV website `--web`
+
+Inspired by [ltsview](https://github.com/naoya/perl-Text-LTSV/blob/master/bin/ltsview).
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'ltsvr'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
     $ gem install ltsvr
-
+    
 ## Usage
 
-TODO: Write usage instructions here
+    $ ltsvr -h
+    ltsvr [OPTION] [FILE]...
+    -k, --keywords LABEL             Display keywords   (-k host,ua)
+    -i, --ignore-keywords LABEL      Ignore keywords    (-i time,req)
+    -f, --filter FILTER              Filtering keywords (-f host=192.168.1.1,ua=Mozilla)
+        --web                        Go to website (http://ltsv.org)
 
 ## Contributing
 
