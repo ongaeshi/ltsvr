@@ -54,6 +54,11 @@ module Ltsvr
       assert_equal "{:host=>\"127.0.0.1\", :user=>\"frank\"}", r[0]
     end
 
+    def test_ignore_keywords
+      r = command("#{TEST_LTSV} -i ua,referer,time -i ident,req,size,status").split("\n")
+      assert_equal "{:host=>\"127.0.0.1\", :user=>\"frank\"}", r[0]
+    end
+
     private
 
     def command(arg)

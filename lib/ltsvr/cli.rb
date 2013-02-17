@@ -53,9 +53,11 @@ module Ltsvr
     
     def parse_line(line)
       hash = LTSV.parse(line)[0]
-      
+
+      # filter
       return nil unless @filters.all? {|filter| filter.match? hash}
 
+      # keywords
       result = {}
 
       if @keywords.empty?
@@ -66,24 +68,25 @@ module Ltsvr
         end
       end
 
-      
-      # hash.map do ||
-      # end
+      # ignore_keywords
+      @ignore_keywords.each do |k|
+        result.delete(k)
+      end
 
-      # # hash.inspect if @fileters.all {|filter| fileter.match? hash}
-
+      # result
       result.inspect
     end
 
     private
 
     def compile
-      @filters  = filter_compile
-      @keywords = keywords_compile
-      # p @filters, @keywords, @ignore_keywords]
+      @filters         = compile_filter
+      @keywords        = compile_keywords
+      @ignore_keywords = compile_ignore_keywords
+      # p [@filters, @keywords, @ignore_keywords]
     end
 
-    def filter_compile
+    def compile_filter
       @options[:filters].reduce([]) do |result, v|
         result + v.split(",").map do |data|
           d = data.split("=")
@@ -92,8 +95,14 @@ module Ltsvr
       end
     end
 
-    def keywords_compile
+    def compile_keywords
       @options[:keywords].reduce([]) do |result, v|
+        result + v.split(",").map{|a|a.intern}
+      end
+    end
+
+    def compile_ignore_keywords
+      @options[:ignore_keywords].reduce([]) do |result, v|
         result + v.split(",").map{|a|a.intern}
       end
     end
