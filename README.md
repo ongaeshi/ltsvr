@@ -67,6 +67,11 @@ Use pipe.
 $ tail -f /path/to/log | ltsvr -f user=takashi
 ```
 
+Go to LTSV website. (Launch Browser)
+
+```
+$ ltsvr --web
+```
 
 ## Contributing
 
