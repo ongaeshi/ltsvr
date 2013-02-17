@@ -17,6 +17,9 @@ module Ltsvr
       assert Filter.new(:host, "127.0.0.1").match?(hash) # Support symbol
       assert !Filter.new("host", "127.0.0.2").match?(hash)
       assert Filter.new("user", "frank").match?(hash)
+      assert Filter.new("time", "2000").match?(hash) # Sub match
+      assert !Filter.new("time", "2001").match?(hash)
+      assert Filter.new("ua", "Mozilla").match?(hash)
     end
   end
 end

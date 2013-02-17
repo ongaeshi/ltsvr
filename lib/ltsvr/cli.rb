@@ -86,7 +86,7 @@ module Ltsvr
     end
 
     def match?(hash)
-      hash[@label] == @value
+      hash[@label].match @value
     end
   end
   
