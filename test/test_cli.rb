@@ -46,17 +46,17 @@ module Ltsvr
 
     def test_keywords
       r = command("#{TEST_LTSV} -k host,user").split("\n")
-      assert_equal "{:host=>\"127.0.0.1\", :user=>\"frank\"}", r[0]
+      assert_equal "host:127.0.0.1, user:frank", r[0]
     end
 
     def test_keywords_multi
       r = command("#{TEST_LTSV} -k host -k user").split("\n")
-      assert_equal "{:host=>\"127.0.0.1\", :user=>\"frank\"}", r[0]
+      assert_equal "host:127.0.0.1, user:frank", r[0]
     end
 
     def test_ignore_keywords
-      r = command("#{TEST_LTSV} -i ua,referer,time -i ident,req,size,status").split("\n")
-      assert_equal "{:host=>\"127.0.0.1\", :user=>\"frank\"}", r[0]
+      r = command("#{TEST_LTSV} -i ua,referer,time -i ident,req,size").split("\n")
+      assert_equal "host:127.0.0.1, user:frank, status:200", r[0]
     end
 
     private

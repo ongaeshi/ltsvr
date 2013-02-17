@@ -74,7 +74,7 @@ module Ltsvr
       end
 
       # result
-      result.inspect
+      result_str(result)
     end
 
     private
@@ -105,6 +105,16 @@ module Ltsvr
       @options[:ignore_keywords].reduce([]) do |result, v|
         result + v.split(",").map{|a|a.intern}
       end
+    end
+
+    def result_str(hash)
+      result = []
+
+      hash.each do |key, value|
+        result << "#{key}:#{value}"
+      end
+      
+      result.join(", ")
     end
 
   end
