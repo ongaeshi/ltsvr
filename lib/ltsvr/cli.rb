@@ -20,7 +20,7 @@ module Ltsvr
       opts = OptionParser.new("#{File.basename($0)}")
       opts.on("-k LABEL", "--keywords"       , "Display keywords   (-k host,ua)")                      {|v| options[:keywords]        << v }
       opts.on("-i LABEL", "--ignore-keywords", "Ignore keywords    (-i time,req)")                     {|v| options[:ignore_keywords] << v }
-      opts.on("-f FILTER", "--filter"        , "Filtering keywords (-f host=192.168.1.1,ua=~Mozilla)") {|v| options[:filters]         << v }
+      opts.on("-f FILTER", "--filter"        , "Filtering keywords (-f host=192.168.1.1,ua=Mozilla)")  {|v| options[:filters]         << v }
       opts.on("--web"                        , "Go to website (http://ltsv.org)")                      {|v| options[:web] = true }
       opts.parse!(arguments)
 
@@ -53,27 +53,49 @@ module Ltsvr
     
     def parse_line(line)
       hash = LTSV.parse(line)[0]
-      hash.inspect if @filters.all? {|filter| filter.match? hash}
+      
+      return nil unless @filters.all? {|filter| filter.match? hash}
+
+      result = {}
+
+      if @keywords.empty?
+        result = hash
+      else
+        @keywords.each do |k|
+          result[k] = hash[k]
+        end
+      end
+
+      
+      # hash.map do ||
+      # end
 
       # # hash.inspect if @fileters.all {|filter| fileter.match? hash}
 
-      # hash.inspect
+      result.inspect
     end
 
     private
 
     def compile
-      filter_compile
+      @filters  = filter_compile
+      @keywords = keywords_compile
+      # p @filters, @keywords, @ignore_keywords]
     end
 
     def filter_compile
-      @filters = @options[:filters].reduce([]) do |result, v|
+      @options[:filters].reduce([]) do |result, v|
         result + v.split(",").map do |data|
           d = data.split("=")
           Filter.new(d[0], d[1])
         end
       end
-      # p @filters
+    end
+
+    def keywords_compile
+      @options[:keywords].reduce([]) do |result, v|
+        result + v.split(",").map{|a|a.intern}
+      end
     end
 
   end

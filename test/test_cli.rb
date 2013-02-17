@@ -44,6 +44,16 @@ module Ltsvr
       assert_match /index.html/, r[0]
     end
 
+    def test_keywords
+      r = command("#{TEST_LTSV} -k host,user").split("\n")
+      assert_equal "{:host=>\"127.0.0.1\", :user=>\"frank\"}", r[0]
+    end
+
+    def test_keywords_multi
+      r = command("#{TEST_LTSV} -k host -k user").split("\n")
+      assert_equal "{:host=>\"127.0.0.1\", :user=>\"frank\"}", r[0]
+    end
+
     private
 
     def command(arg)
