@@ -27,14 +27,14 @@ module Ltsvr
       obj = Ltsvr.new
 
       if File.pipe?($stdin)
-        while line = $stdin.gets # @todo tail -f が上手く動かない
-          p obj.parse_line(line)
+        while line = $stdin.gets
+          stdout.puts obj.parse_line(line)
         end
       else
         arguments.each do |filename|
           io = open(filename)
           while line = io.gets
-            p obj.parse_line(line)
+            stdout.puts obj.parse_line(line)
           end
         end
       end
@@ -43,7 +43,7 @@ module Ltsvr
 
   class Ltsvr
     def parse_line(line)
-      LTSV.parse(line)[0]
+      LTSV.parse(line)[0].inspect
     end
   end
 end
