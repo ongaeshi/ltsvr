@@ -58,7 +58,7 @@ module Ltsvr
     end
     
     def parse_line(line)
-      hash = LTSV.parse(line)[0]
+      hash = LTSV.parse(line)[0] || {}
 
       # filter
       return nil unless @filters.all? {|filter| filter.match? hash}
@@ -132,7 +132,7 @@ module Ltsvr
     end
 
     def match?(hash)
-      hash[@label].match @value
+      hash[@label] && hash[@label].match(@value)
     end
   end
   
