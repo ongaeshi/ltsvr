@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Ltsvr::VERSION
   gem.authors       = ["ongaeshi"]
   gem.email         = ["ongaeshi0621@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{LTSV Viewer made with Ruby. Select label. Filtering keyword. Go to LTSV website.}
+  gem.summary       = %q{LTSV viewer for Ruby}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
