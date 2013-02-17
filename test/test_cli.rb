@@ -22,8 +22,14 @@ module Ltsvr
     end
 
     def test_file_specify
-      r = command(fullpath("data/test.ltsv")).split("\n")
+      r = command(TEST_LTSV).split("\n")
       assert_equal 3, r.size 
+    end
+
+    def test_filter
+      r = command("#{TEST_LTSV} -f user=takashi").split("\n")
+      assert_equal 1, r.size
+      assert_match /takashi/, r[0]
     end
 
     private
@@ -33,9 +39,7 @@ module Ltsvr
       @string_io.string
     end
 
-    def fullpath(path)
-      File.join(File.dirname(__FILE__), path)
-    end
+    TEST_LTSV = File.join(File.dirname(__FILE__), "data/test.ltsv")
   end
 end
 

@@ -24,11 +24,12 @@ module Ltsvr
       opts.on("--web"                        , "Go to website (http://ltsv.org)")                      {|v| options[:web] = true }
       opts.parse!(arguments)
 
-      obj = Ltsvr.new
+      obj = Ltsvr.new(options)
 
       if File.pipe?($stdin)
         while line = $stdin.gets
-          stdout.puts obj.parse_line(line)
+          result = obj.parse_line(line)
+          stdout.puts result if result
         end
       elsif arguments.empty?
         stdout.puts opts.help
@@ -36,7 +37,8 @@ module Ltsvr
         arguments.each do |filename|
           io = open(filename)
           while line = io.gets
-            stdout.puts obj.parse_line(line)
+            result = obj.parse_line(line)
+            stdout.puts result if result
           end
         end
       end
@@ -44,8 +46,48 @@ module Ltsvr
   end
 
   class Ltsvr
+    def initialize(options)
+      @options = options
+      compile
+    end
+    
     def parse_line(line)
-      LTSV.parse(line)[0].inspect
+      hash = LTSV.parse(line)[0]
+      hash.inspect if @filters.all? {|filter| filter.match? hash}
+
+      # # hash.inspect if @fileters.all {|filter| fileter.match? hash}
+
+      # hash.inspect
+    end
+
+    private
+
+    def compile
+      filter_compile
+    end
+
+    def filter_compile
+      # p @options
+      @filters = @options[:filters].reduce([]) do |result, v|
+        # p v
+        d = v.split("=")
+        result << Filter.new(d[0], d[1])
+        
+      end
+      # p @filters
+    end
+
+  end
+
+  class Filter
+    def initialize(label, value)
+      @label = label.intern
+      @value = value
+    end
+
+    def match?(hash)
+      hash[@label] == @value
     end
   end
+  
 end
